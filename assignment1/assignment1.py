@@ -7,25 +7,6 @@ def greet(name):
     return f"Hello, {name}!"
 
 def calc(a, b, operation="multiply"):
-    # try:
-    #     # if type(a) in [int, float] and type(b) in [int, float]:
-    #     if operation == "add":
-    #         return a + b
-    #     elif operation == "subtract":
-    #         return a - b
-    #     elif operation == "divide":
-    #         try:
-    #             return a / b
-    #         except ZeroDivisionError:
-    #             return "You can't divide by 0!"
-    #     elif operation == "modulo":
-    #         return a % b
-    #     else:
-    #         return a * b
-    # # else:
-    # except (TypeError, ValueError):
-    #     return "You can't multiply those values!"
-
     try:
         match operation:
             case "add":
