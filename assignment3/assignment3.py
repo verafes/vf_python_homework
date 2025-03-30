@@ -42,7 +42,8 @@ print(f"Task 3.2. last_two:\n {last_two}")
 employee_shape = more_employees.shape
 print(f"Task 3.3. employee_shape:\n {employee_shape}")
 
-print(f"Task 3.4. more_employees.info:\n {more_employees.info}")
+print(f"Task 3.4. more_employees.info:")
+more_employees.info()
 
 #Task 4. Data Cleaning
 dirty_data = pd.read_csv("dirty_data.csv")
