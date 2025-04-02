@@ -58,11 +58,10 @@ print(f"Task 4.3. Remove duplicates:\n {clean_data}")
 clean_data["Age"] = pd.to_numeric(clean_data["Age"], errors="coerce")
 print(f"Task 4.3. Convert Age to numeric:\n {clean_data}")
 
-clean_data["Salary"] = pd.to_numeric(clean_data["Salary"], errors="coerce")
-print(f"Task 4.4. Salary to numeric:\n {clean_data}\n")
-
 clean_data["Salary"] = clean_data["Salary"].replace(["unknown", "n/a"], pd.NA)
 print(f"Task 4.4. Replace unknown, n/a with NaN:\n {clean_data}")
+clean_data["Salary"] = pd.to_numeric(clean_data["Salary"], errors="coerce")
+print(f"Task 4.4. Salary to numeric:\n {clean_data}\n")
 
 mean_age = clean_data["Age"].mean()
 clean_data["Age"] = clean_data["Age"].fillna(mean_age)
@@ -73,8 +72,7 @@ print(f"Task 4.5. Fill missing numeric values:\n {clean_data}")
 clean_data["Hire Date"] = pd.to_datetime(clean_data["Hire Date"], errors="coerce")
 print(f"Task 4.6. Convert Hire Date to datetime:\n {clean_data}")
 
-clean_data["Department"] = clean_data["Department"].str.strip()
-clean_data["Department"] = clean_data["Department"].str.upper()
+clean_data["Department"] = clean_data["Department"].str.strip().str.upper()
 clean_data["Name"] = clean_data["Name"].str.strip()
 clean_data["Name"] = clean_data["Name"].str.upper()
 print(f"Task 4.7. Strip extra whitespace and uppercase:\n {clean_data}")
