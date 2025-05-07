@@ -31,17 +31,26 @@ try:
 
         # Task 2
         statement2 = """
-            SELECT orders.order_id, line_items.line_item_id, products.product_name 
-            FROM orders 
-            JOIN line_items ON orders.order_id = line_items.order_id 
-            JOIN products ON products.product_id = line_items.product_id
-            WHERE orders.order_id IN ( SELECT order_id FROM orders ORDER BY order_id LIMIT 5);
+            SELECT c.customer_name, AVG(t.total_price) AS average_total_price
+            FROM customers c
+            JOIN orders o ON c.customer_id = o.customer_id
+            JOIN (
+                SELECT li.order_id, SUM(li.quantity * p.price) AS total_price
+                FROM line_items li
+                JOIN products p ON li.product_id = p.product_id
+                GROUP BY li.order_id
+            ) t ON o.order_id = t.order_id
+            GROUP BY c.customer_id;
         """
         cursor.execute(statement2)
         results = cursor.fetchall()
-        print("\nTASK 2:")
-        for row in results:
-            print(f"Customer: {row[0]}, Average Order Price: {row[1]:.2f}")
+        customers = [row[0] for row in results]
+        max_left = max(len(s) for s in customers)
+
+        print("\nTASK 2:\nCustomer, Average Order Price:")
+        for (name, avg), left in zip(results, customers):
+            print(f"{left:<{max_left}} : {avg:.2f}")
+
 
 except sqlite3.Error as e:
     print("SQL error:", e)
@@ -50,7 +59,7 @@ except sqlite3.Error as e:
 try:
     with sqlite3.connect(db_path) as conn:
         print("\nTASK 3:")
-        print("\nCreating order for Perez and Sons")
+        print("Creating order for Perez and Sons")
 
         # retrieve the customer_id
         statement3 = """
