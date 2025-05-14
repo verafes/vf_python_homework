@@ -1,0 +1,7 @@
+Challenge: iteration via pagination.
+I found the <a> element with "page=N" in the href, but it couldn't click it.
+I tried several locators—both CSS and XPath—nothing worked, it found the element but didn't click.
+Finally, I got the href link and opened it with driver.get(url).
+
+I found that Selenium 4 has a built-in ChromeDriverManager(), so we don’t need to install it manually.
+However, ChromeService might be needed on Windows 10.

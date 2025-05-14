@@ -1,0 +1,33 @@
+### Ethical Web Scraping Analysis
+
+1. Which sections of the website are restricted for crawling?
+
+The following sections of Wikipedia are restricted from crawling:
+- Special pages like /wiki/Special: and /wiki/Spezial:,
+search (Special:Search),
+recent changes, new pages, logs, preferences, and user contributions
+
+- Pages such as:
+/w/ (core backend wiki operations)
+/api/ (API endpoints)
+/trap/ (possibly a bot trap or honeypot)
+
+- export, books, random pages, and all pages with specific functionalities
+/wiki/Special:Export
+/wiki/Special:Book
+/wiki/Special:Random
+/wiki/Special:AllPages
+/wiki/Special:PrefixIndex
+/wiki/Special:Unblock
+/wiki/Special:Delete
+
+2. Are there specific rules for certain user agents?
+No, the rules in the robots.txt file apply to all user agents (`User-agent: *`),
+meaning the restrictions are global for all crawlers.
+However, some like UbiCrawler are fully blocked, and Googlebot is blocked from /api/rest_v1/.
+
+3. Why do websites use robots.txt?
+Websites use robots.txt to tell bots which pages parts of the website can or cannot be crawled.
+This helps protect private info, reduce server load, keep the site running smoothly,
+and ensures that only the intended content is indexed by search engines.
+Respecting these rules is part of ethical web scraping.
