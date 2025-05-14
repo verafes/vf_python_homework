@@ -16,7 +16,7 @@ def get_driver():
     chrome_options.add_argument("--incognito")
     chrome_options.add_argument("--disable-dev-shm-usage")
     driver = webdriver.Chrome(service=ChromeService(), options=chrome_options)
-    driver.set_window_size(1900, 1000)
+    # driver.set_window_size(1900, 1000)
     return driver
 
 # Task 1.  Review robots.txt
@@ -37,30 +37,56 @@ def extract_books(driver):
     driver.get(book_url)
 
     li_locator = "li.cp-search-result-item"
-    li_elements = WebDriverWait(driver, 10).until(
-        EC.visibility_of_all_elements_located((By.CSS_SELECTOR, li_locator)))
-    print(f"Found {len(li_elements)} results")
     results = []
+    max_pages = 10
 
-    for item in li_elements:
-        title = item.find_element(By.CSS_SELECTOR, "span.cp-screen-reader-message").text if item else "N/A"
-        title = title.split(",")[0].strip()
-        # print("title:", title)
+    current_page = 1
+    while current_page <= max_pages:
+        print(f"Scraping page {current_page}")
 
-        authors_elements = item.find_elements(By.CLASS_NAME, "author-link") if item else "N/A"
-        author_texts = [author.text for author in authors_elements]
-        author = "; ".join(author_texts)
-        # print("author:", author)
+        li_elements = WebDriverWait(driver, 10).until(
+            EC.visibility_of_all_elements_located((By.CSS_SELECTOR, li_locator))
+        )
+        print(f"Found {len(li_elements)} items on page {current_page}")
 
-        format_year = item.find_element(By.CSS_SELECTOR, "span.display-info-primary").text if item else "N/A"
-        format_year = format_year.split("|")[0].strip()
-        # print("format year:", format_year)
+        for item in li_elements:
+            title = item.find_element(By.CSS_SELECTOR, "span.cp-screen-reader-message").text if item else "N/A"
+            title = title.split(",")[0].strip()
+            # print("title:", title)
 
-        results.append({
-            "Title": title,
-            "Author": author,
-            "Format-Year": format_year
-        })
+            authors_elements = item.find_elements(By.CLASS_NAME, "author-link") if item else "N/A"
+            author_texts = [author.text for author in authors_elements]
+            author = "; ".join(author_texts)
+            # print("author:", author)
+
+            format_year = item.find_element(By.CSS_SELECTOR, "span.display-info-primary").text if item else "N/A"
+            format_year = format_year.split("|")[0].strip()
+            # print("format year:", format_year)
+
+            results.append({
+                "Title": title,
+                "Author": author,
+                "Format-Year": format_year
+            })
+
+        # Check if there is a "Next" page
+        if current_page >= max_pages:
+            print(f"Reached max page limit ({max_pages}).")
+            break
+        next_page = current_page + 1
+        buttons = driver.find_elements(
+            By.XPATH,
+            f"//nav/ul[@class='pagination__desktop-items']/li[@class='cp-pagination-item pagination__page-number']/a[contains(@href,'page={next_page}')]"
+        )
+        if buttons:
+            print(f"Moving to next page {next_page}...")
+            next_page_href = buttons[0].get_attribute("href")
+            driver.get(next_page_href)
+            current_page += 1
+
+        else:
+            print("No more pages.")
+            break
 
     print(len(results))
     pprint(results, sort_dicts=False)
@@ -73,7 +99,7 @@ def extract_books(driver):
     df_results = pd.DataFrame(results)
     print(df_results)
 
-    # Save data to a CVS file
+    # Task 4. Save data to a CVS file
     df_results.to_csv("get_books.csv", index=False)
 
     # Save data to a JSON file
