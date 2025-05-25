@@ -1,0 +1,16 @@
+1. Static vs. Interactive Visualizations
+Static charts (like PNGs or printed graphs) give a quick snapshot of data but can’t change once they’re made.
+Interactive visualizations let you zoom, filter, and drill down in real time,
+so you can explore different angles without making a new plot each time.
+
+2. Advantages of Dashboards for Real-Time Data Exploration
+Dashboards combine multiple charts, tables, and metrics in one place,
+giving you an at-a-glance view of key information.
+Because they update automatically as new data arrives, you can spot trends,
+anomalies, or urgent issues instantly and make faster decisions.
+
+3. Improving Data Communication with Plotly and Dash
+Interactive tools like Plotly and Dash let everyone—from technical experts
+to business stakeholders—play with the data directly in their browser.
+This hands-on approach makes insights more memorable and encourages collaboration,
+since users can test “what-if” scenarios and share live views of the analysis.
